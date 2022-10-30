@@ -8,6 +8,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { useNavigate,Link } from 'react-router-dom';
 
 
+
 const Register = () => {
   const [err,setErr]= useState(false);
  const navigate =useNavigate();
@@ -25,38 +26,37 @@ try {
   
   const res = await createUserWithEmailAndPassword(auth, email, password);
 
-
-const storageRef = ref(storage,displayName);
+//Create a unique image name
+const date = new Date().getTime();
+const storageRef = ref(storage,`${displayName+date}`);
 
 const uploadTask = uploadBytesResumable(storageRef, file);
 
-
-uploadTask.on('state_changed', 
- 
-  // (err) => {
-  //   setErr(true)
-  // }, 
-  () => {
-    
-    getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
-
+await uploadBytesResumable(storageRef,file).then(()=>{
+  getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+    try {
+      //update profile
       await updateProfile(res.user,{
         displayName,
         photoURL:downloadURL,
       });
+      //create user on firestore
       await setDoc(doc(db,"users",res.user.uid),{  
         uid:res.user.uid,
         displayName,
         email,
         photoURL:downloadURL,
       });
-
-      await setDoc(doc(db,"userchats",res.user.uid),{});
+   //create empty user chats on firebase
+      await setDoc(doc(db,"userChats",res.user.uid),{});
      navigate("/");
+    } catch (error) {
+      setErr(true);
+    }  
+});
+});
 
-    });
-  }
-);
+ 
 } catch (err) {
   setErr(true);
 }
