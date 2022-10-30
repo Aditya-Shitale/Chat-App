@@ -5,10 +5,14 @@ import { auth,storage,db } from '../firebase'
 import {  ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useState } from 'react';
 import { doc, setDoc } from "firebase/firestore"; 
+import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
   const [err,setErr]= useState(false);
+ const navigate =useNavigate();
+
+
   const handleSubmit =async(e)=>{
     e.preventDefault();
     // console.log(e.target[0].value)
@@ -29,22 +33,27 @@ const uploadTask = uploadBytesResumable(storageRef, file);
 
 uploadTask.on('state_changed', 
  
-  (error) => {
-    setErr(true)
-  }, 
+  // (err) => {
+  //   setErr(true)
+  // }, 
   () => {
     
     getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+
       await updateProfile(res.user,{
         displayName,
         photoURL:downloadURL,
       });
-      await setDoc(doc(db,  "users",res.user.uid),{
+      await setDoc(doc(db,"users",res.user.uid),{  
         uid:res.user.uid,
         displayName,
         email,
         photoURL:downloadURL,
       });
+
+      await setDoc(doc(db,"userhats",res.user.uid),{});
+     navigate("/");
+
     });
   }
 );
