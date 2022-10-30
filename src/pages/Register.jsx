@@ -5,7 +5,7 @@ import { auth,storage,db } from '../firebase'
 import {  ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useState } from 'react';
 import { doc, setDoc } from "firebase/firestore"; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 
 
 const Register = () => {
@@ -51,18 +51,18 @@ uploadTask.on('state_changed',
         photoURL:downloadURL,
       });
 
-      await setDoc(doc(db,"userhats",res.user.uid),{});
+      await setDoc(doc(db,"userchats",res.user.uid),{});
      navigate("/");
 
     });
   }
 );
 } catch (err) {
-  setErr(true)
+  setErr(true);
 }
       
 
-  }
+  };
   return (
     <div className='formContainer'>
     <div className='formWrapper'>
@@ -82,7 +82,7 @@ uploadTask.on('state_changed',
             <button>Sign Up</button>
             {err && <span>Something went wrong</span>}
         </form>
-        <p>You do have an account?  login</p>
+        <p>You do have an account? <Link to="/login">login</Link> </p>
         </div>
       
     </div>
