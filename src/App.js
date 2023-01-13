@@ -5,6 +5,7 @@ import './style.scss'
 import {  Route,  Routes,  BrowserRouter,Navigate} from "react-router-dom";
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
+import Footer from './pages/Footer';
 
 function App() {
   const {currentUser} =useContext(AuthContext)
@@ -17,6 +18,7 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
+      {/* <h1>Chatter</h1> */}
 <Route path="/">
 <Route index element={<ProtectedRoute><Home/></ProtectedRoute>}/>
 <Route path="login" element={<Login/>}/>
@@ -25,6 +27,7 @@ function App() {
 </Route>
 
     </Routes>
+<Footer />
   
     </BrowserRouter>
  

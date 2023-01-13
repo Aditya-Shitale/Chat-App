@@ -14,6 +14,11 @@ const Input = () => {
   
   const {currentUser} =useContext(AuthContext);
   const {data} =useContext(ChatContext);
+
+  const onFormSubmit = e => {
+    e.preventDefault();
+    // send state to server with e.g. `window.fetch`
+  }
   
   const handleSend =async()=>{
    if(img){
@@ -65,7 +70,7 @@ await updateDoc(doc(db,"chats",data.chatId),{
   };
   return (
     <div className='input'>
-      <input type='text' placeholder='Type Now...' onChange={e=>setText(e.target.value)} value={text}/>
+      <input type='text' placeholder='Type Here...'  onChange={e=>setText(e.target.value)} value={text} onSubmit={onFormSubmit}/>
       <div className="send">
         <img src={Attach} alt="" />
         <input type="file" style={{display:'none'}} id='file' onChange={e=>setImg(e.target.files)} />

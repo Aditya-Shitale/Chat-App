@@ -17,7 +17,7 @@ ref.current?.scrollIntoView({behavior:"smooth"})
     <div className={`message ${message.senderId === currentUser.uid && "owner"}`}>
         <div className="messageInfo">
           <img src={message.senderId === currentUser.uid ? currentUser.photoURL: data.user.photoURL} alt="" />
-          <span>Just Now</span>
+          <span>just now</span>
         </div>
         <div className="messageContent">
           <p>{message.text}</p>

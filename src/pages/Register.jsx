@@ -31,7 +31,7 @@ try {
 const storageRef = ref(storage,displayName);
 
 const uploadTask = uploadBytesResumable(storageRef, file);
-
+console.log("it reached here")
 
 uploadTask.on(
   (error)=>{
@@ -40,13 +40,14 @@ uploadTask.on(
   ()=>{
    
   getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
-   
+    console.log("it reached here1")
     try {
       //update profile
       await updateProfile(res.user,{
         displayName,
         photoURL:downloadURL,
       });
+      console.log("it reached here2")
       //create user on firestore
       await setDoc(doc(db,"users",res.user.uid),{  
         uid:res.user.uid,
